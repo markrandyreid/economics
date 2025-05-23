@@ -1,0 +1,143 @@
+---
+title: "Introduction to Econometrics"
+subtitle: "Assignment One"
+author: "M. Randy Reid"
+output:
+  pdf_document: default
+  html_document: default
+date: "`r Sys.Date()`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Question 1
+Using the following 5 observations on X and Y, estimate the intercept and regression coefficient
+(estimate α and β in yi = α + βxi + εi) using R:
+
+```{r observations}
+x <- c(1, 2, 3, 4, 5)
+y <- c(2, 2, 3, 3, 6)
+```
+
+Report your output - annotate and explain. Provide a summary regression output from R: 
+
+You can also embed plots, for example:
+
+```{r}
+#fit a linear model for y on x, where y is the dependent variable and x is the independent variable
+#we're examining how changes in x impact y
+model <- lm(y ~ x)
+
+#summarize the fit
+print(model)
+summary(model)
+
+#Intepretation of Results:
+#The slope is estimated to be .90 which reflects the change in y with a single unit change in X
+#Our intercept is estimated to be 0.50. As such, Y is 0.50 when x is 0. 
+#R-Squared is 0.75 meaning that three forths of the variation in Y is attributable to (or explained by) X. 
+#Our model shows a positive linear relationship between the variables. 
+```
+
+## Question 2
+Obtain predicted values and the residuals, and print these along with the values of Y and X.
+```{r}
+#recalculate residuals from previous model
+model_residuals <- resid(model)
+
+#variables and residuals in single table or date frame
+q2_table <- data.frame(x=x,y=y,model_residuals=model_residuals)
+
+print(q2_table)
+```
+
+## Question 3
+If another observation (obs. number 6) will have X=3, what is your best prediction for Y? Can you
+calculate the residual for this prediction?
+```{r}
+#we know that our model is y(hat) = 0.5 + 0.9x and can therefore predict a new value of y given x = 3 
+#by substitution
+y_estimate <- 0.5 + 0.9*3
+print(y_estimate)
+```
+       
+## Question 4
+We're using downloaded data (excel format) so I need install the necessary packages and establish a working directory
+```{r}
+#We're using downloaded data so I need to establish a working directory
+setwd('/Users/mrr/Desktop/Economics/Intro.Econometrics/Data Files')
+#import data
+h_data <- read.csv('/Users/mrr/Desktop/Economics/Intro.Econometrics/Data Files/house.csv')
+#print for visual inspection
+#print(h_data)
+
+#calculate the means and SD for each variable and organize in a data frame
+h_averages <- sapply(h_data, mean)
+h_sigma <- sapply(h_data, sd)
+
+h_mean_sigma <- data.frame(house_variables = names(h_data), averages = h_averages, SD = h_sigma)
+print(h_mean_sigma)
+```
+
+##Question 5
+Provide scatterplots for sqft x price and bedrms x price (price on the vertical axis) on two separate plots, also plot a histogram of house prices, and a density plot. Report all 4 plots on one plot window - in R, you can use the par(mfrow=c(2,2))
+```{r}
+setwd('/Users/mrr/Desktop/Economics/Intro.Econometrics/Data Files')
+h_data <- read.csv('/Users/mrr/Desktop/Economics/Intro.Econometrics/Data Files/house.csv')
+
+par(mfrow=c(2,2))
+#plot 1
+plot(h_data$SQFT,h_data$PRICE, main = "Sqft against price", ylab = "Price", xlab = "Sqft")
+#plot 2
+plot(h_data$BEDRMS,h_data$PRICE, main = "Bedroom against price", ylab = "Price", xlab = "Bedrooms")
+#plot 3
+hist(h_data$PRICE, main = "Histogram of Housing Prices")
+#plot 4
+dh_price <- density(h_data$PRICE)
+plot(dh_price, main = "Density Plot of x", xlab = "x", ylab = "Density", col = "blue", lwd = 2)
+```
+
+##Question 6
+Use OLS to estimate the equation: pricei = α + β ∗ sqf ti + εi. Report the summary statistics for the
+regression results. What are the estimated values of α and β?
+```{r}
+setwd('/Users/mrr/Desktop/Economics/Intro.Econometrics/Data Files')
+h_data <- read.csv('/Users/mrr/Desktop/Economics/Intro.Econometrics/Data Files/house.csv')
+
+#OLS
+h_model <- lm(h_data$PRICE ~ h_data$SQFT)
+
+#summary stats
+summary(h_model)
+
+#pulling coefficients
+estimate_intercept <- coef(h_model)[1]
+estimate_beta <- coef(h_model)[2]
+
+#print estimates
+print(estimate_beta)
+print(estimate_intercept)
+```
+
+##Question 7
+Using the results from the above regression, plot price and sqft (i.e. scatter plot with the regression line) on one graph, and plot the residuals on another graph
+```{r}
+setwd('/Users/mrr/Desktop/Economics/Intro.Econometrics/Data Files')
+#import data
+h_data <- read.csv('/Users/mrr/Desktop/Economics/Intro.Econometrics/Data Files/house.csv')
+
+#OLS
+h_model <- lm(h_data$PRICE ~ h_data$SQFT)
+
+#syntax for scatter plot
+plot(h_data$PRICE ~ h_data$SQFT, main = "Scatter Plot and Regression Line", xlab = "Sqft", ylab = "Price", pch=15, col="grey", )
+
+#regressionline
+abline(h_model,col="blue", lwd=1)
+
+#residuals
+h_residuals <- resid(h_model)
+plot(h_residuals)
+```
