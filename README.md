@@ -10,10 +10,10 @@
   </ul>
 </details>
 
-<details name="econ_hw">
+<details name="econ_assignments">
   <summary><strong>Assignments</strong></summary>
    <ul style="padding-left: 30px;">
-     <li><a href="https://github.com/markrandyreid/math/blob/main/homework/calc1.hw1.q2.pdf" target="_blank">Defining a Limit-HW1.Q2</a></li>
+     <li><a href="http://htmlpreview.github.io/?https://github.com/markrandyreid/economics/blob/main/assignments/econometrics.a1.html" target="_blank">Assignment One</a></li>
    </ul>    
 </details>
 
