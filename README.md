@@ -23,7 +23,7 @@
   </ul>
 </details>
 
-<h1>Global Poverty</h1>
+<h2>Global Poverty</h2>
 <p>Course examines the root causes, consequences, and potential solutions to poverty around the world. Through interdisciplinary approaches, students examine economic, political, social, and environmental factors that contribute to global inequality. The course includes case studies, policy analysis, and ethical debates to foster a deeper understanding of poverty’s complex dynamics.</p>
 <br>
 <details name="econ_notes">
